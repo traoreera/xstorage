@@ -1,0 +1,51 @@
+name: xstorage_sandbox
+version: 1.0.0
+author: xcore
+description: >
+  Sandboxed local file storage — all I/O strictly isolated inside data/.
+  Called exclusively by the trusted xstorage plugin. Never accessed directly.
+
+execution_mode: sandboxed
+entry_point: src/main.py
+framework_version: ">=2.0"
+
+allowed_imports:
+  - base64
+  - mimetypes
+  - pathlib
+  - re
+  - unicodedata
+  - uuid
+  - hashlib
+  - logging
+  - asyncio
+  - zipfile
+  - pydantic
+
+permissions:
+  - resources: 'xstorage.*'
+    actions: ["*"]
+    effect: allow
+
+resources:
+  timeout_seconds: 30
+  max_memory_mb: 64
+  max_disk_mb: 10240  # 10 GB — adjust per deployment
+  rate_limit:
+    calls: 1000
+    period_seconds: 60
+
+runtime:
+  health_check:
+    enabled: true
+    interval_seconds: 60
+    timeout_seconds: 5
+  retry:
+    max_attempts: 1
+    backoff_seconds: 0.0
+
+filesystem:
+  allowed_paths:
+    - data/
+  denied_paths:
+    - src/
