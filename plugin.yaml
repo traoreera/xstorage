@@ -23,14 +23,14 @@ allowed_imports:
   - pydantic
 
 permissions:
-  - resources: 'xstorage.*'
+  - resource: "xstorage.*"
     actions: ["*"]
     effect: allow
 
 resources:
   timeout_seconds: 30
   max_memory_mb: 64
-  max_disk_mb: 10240  # 10 GB — adjust per deployment
+  max_disk_mb: 10240 # 10 GB — adjust per deployment
   rate_limit:
     calls: 1000
     period_seconds: 60
